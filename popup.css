@@ -1,0 +1,15 @@
+body {
+  margin: 1rem;
+  display: flex;
+  gap: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+button {
+  background: black;
+  color: white;
+  font-weight: bold;
+  border: 2px solid black;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+}
