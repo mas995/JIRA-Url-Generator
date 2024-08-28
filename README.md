@@ -1,5 +1,5 @@
 # JIRA URL Generator
-This extension will scan the page for common CBG Patters and create a JIRA link to the ticket. The results will be added to your clipboard so you can paste them in your PR.
+This extension will scan the page for common CBG JIRA Ticket Patterns and create a link to the ticket. The results will be added to your clipboard so you can paste them in your PR.
 
 ## Default Values
 - CBGAM-
