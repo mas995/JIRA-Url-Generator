@@ -18,4 +18,16 @@ button {
   border: 2px solid black;
   border-radius: 4px;
   padding: 0.5rem 1rem;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.5rem;
+}
+
+button:active {
+  background: url(bomb.png) no-repeat center;
+  background-size: 2rem;
+  background-color: black;
+  font-size: 0;
 }

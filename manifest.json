@@ -7,7 +7,7 @@
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "48": "icon.png"
+      "48": "bomb.png"
     }
   },
   "background": {
