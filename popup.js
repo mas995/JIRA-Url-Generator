@@ -1,9 +1,9 @@
 document.getElementById("boomButton").addEventListener("click", () => {
   const patternPrefix =
-    document.getElementById("patternPrefix").value || "CBGAM-";
+    document.getElementById("patternPrefix").value || "MESP-";
   const urlTemplate =
     document.getElementById("urlTemplate").value ||
-    "https://sherwin-williams.atlassian.net/browse/";
+    "https://company.atlassian.net/browse/";
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (tabs && tabs.length > 0) {
@@ -20,10 +20,14 @@ document.getElementById("boomButton").addEventListener("click", () => {
           }
           if (results && results[0] && results[0].result) {
             const urls = results[0].result;
-            const urlString = urls.join("\n");
-            navigator.clipboard.writeText(urlString).then(() => {
-              alert("URLs copied to clipboard!");
-            });
+            if (urls.length > 0) {
+              const urlString = urls.join("\n");
+              navigator.clipboard.writeText(urlString).then(() => {
+                alert("URLs copied to clipboard!");
+              });
+            } else {
+              alert("No results found.");
+            }
           }
         }
       );
