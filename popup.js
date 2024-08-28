@@ -1,10 +1,17 @@
 document.getElementById("boomButton").addEventListener("click", () => {
+  const patternPrefix =
+    document.getElementById("patternPrefix").value || "CBGAM-";
+  const urlTemplate =
+    document.getElementById("urlTemplate").value ||
+    "https://sherwin-williams.atlassian.net/browse/";
+
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (tabs && tabs.length > 0) {
       chrome.scripting.executeScript(
         {
           target: { tabId: tabs[0].id },
-          func: findPatterns,
+          func: findUniquePatterns,
+          args: [patternPrefix, urlTemplate],
         },
         (results) => {
           if (chrome.runtime.lastError) {
@@ -12,8 +19,7 @@ document.getElementById("boomButton").addEventListener("click", () => {
             return;
           }
           if (results && results[0] && results[0].result) {
-            const uniquePatterns = [...new Set(results[0].result)];
-            const urls = uniquePatterns.map((pattern) => `${pattern}`);
+            const urls = results[0].result;
             const urlString = urls.join("\n");
             navigator.clipboard.writeText(urlString).then(() => {
               alert("URLs copied to clipboard!");
@@ -27,12 +33,13 @@ document.getElementById("boomButton").addEventListener("click", () => {
   });
 });
 
-function findPatterns() {
-  const patterns = ["MESP-", "CBGAM-"]; // Example patterns, make this configurable
-  const foundPatterns = [];
-  const regex = new RegExp(patterns.join("|"), "g");
-  document.body.innerText
-    .match(regex)
-    ?.forEach((match) => foundPatterns.push(match));
-  return foundPatterns;
+function findUniquePatterns(prefix, urlTemplate) {
+  const regex = new RegExp(`${prefix}\\d+`, "g");
+  const foundPatterns = document.body.innerText.match(regex) || [];
+
+  // Filter out duplicates by converting to a Set and back to an array
+  const uniquePatterns = [...new Set(foundPatterns)];
+
+  // Map the unique patterns to their corresponding URLs
+  return uniquePatterns.map((pattern) => `${urlTemplate}${pattern}`);
 }

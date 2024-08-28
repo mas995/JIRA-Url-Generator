@@ -3,6 +3,12 @@ body {
   display: flex;
   gap: 1rem;
   font-family: Arial, sans-serif;
+  flex-direction: column;
+  width: 12rem;
+}
+
+input {
+  padding: 0.5rem;
 }
 
 button {
