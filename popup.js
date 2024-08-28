@@ -1,9 +1,9 @@
 document.getElementById("boomButton").addEventListener("click", () => {
   const patternPrefix =
-    document.getElementById("patternPrefix").value || "MESP-";
+    document.getElementById("patternPrefix").value || "CBGAM-";
   const urlTemplate =
     document.getElementById("urlTemplate").value ||
-    "https://company.atlassian.net/browse/";
+    "https://sherwin-williams.atlassian.net/browse/";
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (tabs && tabs.length > 0) {
