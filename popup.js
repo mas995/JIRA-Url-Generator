@@ -1,6 +1,5 @@
 document.getElementById("boomButton").addEventListener("click", () => {
-  const patternPrefix =
-    document.getElementById("patternPrefix").value || "CBGAM-";
+  const patternPrefixes = ["CBGAM-", "MESP-"];
   const urlTemplate =
     document.getElementById("urlTemplate").value ||
     "https://sherwin-williams.atlassian.net/browse/";
@@ -11,7 +10,7 @@ document.getElementById("boomButton").addEventListener("click", () => {
         {
           target: { tabId: tabs[0].id },
           func: findUniquePatterns,
-          args: [patternPrefix, urlTemplate],
+          args: [patternPrefixes, urlTemplate],
         },
         (results) => {
           if (chrome.runtime.lastError) {
@@ -37,8 +36,8 @@ document.getElementById("boomButton").addEventListener("click", () => {
   });
 });
 
-function findUniquePatterns(prefix, urlTemplate) {
-  const regex = new RegExp(`${prefix}\\d+`, "g");
+function findUniquePatterns(prefixes, urlTemplate) {
+  const regex = new RegExp(`(${prefixes.join("|")})\\d+`, "g");
   const foundPatterns = document.body.innerText.match(regex) || [];
 
   // Filter out duplicates by converting to a Set and back to an array
