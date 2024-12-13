@@ -9,24 +9,13 @@ document.getElementById("boomButton").addEventListener("click", () => {
       chrome.scripting.executeScript(
         {
           target: { tabId: tabs[0].id },
-          func: findUniquePatterns,
+          func: fillPullRequestData,
           args: [patternPrefixes, urlTemplate],
         },
         (results) => {
           if (chrome.runtime.lastError) {
             console.error(chrome.runtime.lastError.message);
             return;
-          }
-          if (results && results[0] && results[0].result) {
-            const urls = results[0].result;
-            if (urls.length > 0) {
-              const urlString = urls.join("\n");
-              navigator.clipboard.writeText(urlString).then(() => {
-                alert("URLs copied to clipboard!");
-              });
-            } else {
-              alert("No results found.");
-            }
           }
         }
       );
@@ -36,13 +25,45 @@ document.getElementById("boomButton").addEventListener("click", () => {
   });
 });
 
-function findUniquePatterns(prefixes, urlTemplate) {
+function fillPullRequestData(prefixes, urlTemplate) {
   const regex = new RegExp(`(${prefixes.join("|")})\\d+`, "g");
   const foundPatterns = document.body.innerText.match(regex) || [];
 
-  // Filter out duplicates by converting to a Set and back to an array
+  // Filter out duplicates
   const uniquePatterns = [...new Set(foundPatterns)];
 
-  // Map the unique patterns to their corresponding URLs
-  return uniquePatterns.map((pattern) => `${urlTemplate}${pattern}`);
+  if (uniquePatterns.length > 0) {
+    // Build the JIRA links
+    const jiraLinks = uniquePatterns.map(
+      (pattern) => `${urlTemplate}${pattern}`
+    );
+
+    // Extract the base and compare branch names from the URL
+    const urlParts = window.location.href.split("compare/");
+    const branches = urlParts[1]?.split("...");
+    const baseBranch = branches?.[0] || "unknown-base-branch";
+    const compareBranch = branches?.[1] || "unknown-compare-branch";
+
+    // Construct the title
+    const title = `${uniquePatterns.join(
+      ", "
+    )}: Merging ${compareBranch} to ${baseBranch}`;
+
+    // Locate the PR title and description fields
+    const titleField = document.querySelector("input#pull_request_title");
+    const descriptionField = document.querySelector(
+      "textarea#pull_request_body"
+    );
+
+    // Populate the title and description fields
+    if (titleField) {
+      titleField.value = title;
+    }
+
+    if (descriptionField) {
+      descriptionField.value = `Related JIRA tickets:\n${jiraLinks.join("\n")}`;
+    }
+  } else {
+    console.error("No matching patterns found.");
+  }
 }
