@@ -1,5 +1,5 @@
 document.getElementById("boomButton").addEventListener("click", () => {
-  const patternPrefixes = ["CBGAM-", "MESP-"];
+  const patternPrefixes = ["CBGAM-", "MESP-", "EBPO-"];
   const urlTemplate =
     document.getElementById("urlTemplate").value ||
     "https://sherwin-williams.atlassian.net/browse/";
