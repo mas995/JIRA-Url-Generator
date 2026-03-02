@@ -3,7 +3,15 @@
   "name": "JIRA Link Generator",
   "version": "1.0",
   "description": "Finds ticket patterns on the current page and generates URLs.",
-  "permissions": ["activeTab", "scripting", "clipboardWrite"],
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "clipboardWrite",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://github.com/*"
+  ],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

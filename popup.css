@@ -31,3 +31,20 @@ button:active {
   background-color: black;
   font-size: 0;
 }
+
+.status {
+  font-size: 0.75rem;
+  line-height: 1.25;
+}
+
+.status.info {
+  color: #444;
+}
+
+.status.success {
+  color: #0b6e0b;
+}
+
+.status.error {
+  color: #b00020;
+}
